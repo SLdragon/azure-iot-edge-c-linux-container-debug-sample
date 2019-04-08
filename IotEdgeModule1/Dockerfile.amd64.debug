@@ -1,0 +1,31 @@
+FROM ubuntu:xenial AS base
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends software-properties-common gdb && \
+    add-apt-repository -y ppa:aziotsdklinux/ppa-azureiot && \
+    apt-get update && \
+    apt-get install -y azure-iot-sdk-c-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY authorized_keys ./authorized_keys
+RUN mkdir ~/.ssh/
+RUN mv /authorized_keys ~/.ssh/authorized_keys
+
+RUN apt-get update
+RUN apt-get install unzip
+RUN apt-get install openssh-server unzip curl -y
+RUN apt-get install emacs24-nox -y
+
+FROM base AS build-env
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends cmake gcc g++ make && \
+    rm -rf /var/lib/apt/lists/* 
+WORKDIR /app
+COPY . ./
+RUN cmake -DCMAKE_BUILD_TYPE=Debug . 
+RUN make
+
+FROM base
+WORKDIR /app
+COPY --from=build-env /app ./
+
+ENTRYPOINT service ssh start && ./main
