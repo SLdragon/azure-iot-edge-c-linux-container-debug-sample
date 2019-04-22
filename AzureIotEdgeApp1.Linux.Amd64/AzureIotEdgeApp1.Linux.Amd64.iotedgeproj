@@ -15,7 +15,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <EdgeTargetPlatform>Linux Amd64</EdgeTargetPlatform>
-    <EdgeTargetConfiguration>Release</EdgeTargetConfiguration>
+    <EdgeTargetConfiguration>Debug</EdgeTargetConfiguration>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\EdgeBuildSystem\AzureIoTEdgeProject.targets" />
   <ItemGroup>

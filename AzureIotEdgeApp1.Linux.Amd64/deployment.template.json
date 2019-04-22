@@ -71,6 +71,7 @@
               "createOptions": {
                 "HostConfig": {
                   "Privileged": true,
+                  "ExposedPorts": { "22/tcp": {} },
                   "PortBindings": {
                     "22/tcp": [
                       {
